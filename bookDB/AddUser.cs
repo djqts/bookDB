@@ -24,9 +24,8 @@ namespace bookMS
             {
                 //添加到数据库
                 Dao dao = new Dao();
-                string sql = "insert into Users values('" + textBox1.Text + "', '" + textBox2.Text + "', '" + textBox3.Text + "', '" + textBox4.Text + ");";
-                int n = dao.Execute(sql);
-                if (n > 0)
+                string sql = "insert into Users values('" + textBox1.Text + "', '" + textBox3.Text + "', '" + textBox2.Text + "', '" + textBox4.Text + "');";
+                if (dao.Execute(sql) > 0)
                 {
                     MessageBox.Show("添加成功！");
 
@@ -49,7 +48,7 @@ namespace bookMS
 
                 //跳转到主界面
                 this.Hide();
-                Admin2 mainForm = new Admin2();
+                UserManage mainForm = new UserManage();
                 mainForm.ShowDialog();
             }
             else

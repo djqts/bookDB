@@ -206,6 +206,7 @@
             Controls.Add(dataGridView1);
             Name = "Admin2";
             Text = "Administered";
+            Load += Admin2_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

@@ -15,9 +15,8 @@ namespace bookMS
         public UserManage()
         {
             InitializeComponent();
-            Table();
         }
-        private void admin2_Load(object sender, EventArgs e)
+        private void UserManage_Load(object sender, EventArgs e)
         {
             Table();
             label2.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
@@ -48,11 +47,11 @@ namespace bookMS
         {
             try
             {
-                string id = label2.Text;
+                string id = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 DialogResult result = MessageBox.Show("确定删除吗？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string sql = "DELETE FROM Users WHERE 书号 = " + id;
+                    string sql = "DELETE FROM Users WHERE id = '" + id + ";";
                     Dao dao = new Dao();
                     if (dao.Execute(sql) > 0)
                     {
@@ -167,11 +166,6 @@ namespace bookMS
             Table();
             textBox1.Text = "";
             textBox2.Text = "";
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

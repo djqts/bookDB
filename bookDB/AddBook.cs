@@ -27,9 +27,8 @@ namespace bookMS
             {
                 //添加到数据库
                 Dao dao = new Dao();
-                string sql = "insert into book values('" + textBox1.Text + "', '" + textBox2.Text + "', '" + textBox3.Text + "', '" + textBox4.Text + "', " + textBox5.Text + ")";
-                int n = dao.Execute(sql);
-                if (n > 0)
+                string sql = "insert into book values('" + textBox1.Text + "', '" + textBox3.Text + "', '" + textBox2.Text + "', '" + textBox4.Text + "', " + textBox5.Text + ")";
+                if (dao.Execute(sql) > 0)
                 {
                     MessageBox.Show("添加成功！");
 

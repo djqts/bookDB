@@ -15,9 +15,8 @@ namespace bookMS
         public Admin2()
         {
             InitializeComponent();
-            Table();
         }
-        private void admin2_Load(object sender, EventArgs e)
+        private void Admin2_Load(object sender, EventArgs e)
         {
             Table();
             label2.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
@@ -53,7 +52,7 @@ namespace bookMS
                 DialogResult result = MessageBox.Show("确定删除吗？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string sql = "DELETE FROM Book WHERE 书号 = " + id;
+                    string sql = "DELETE FROM Book WHERE 书号 = '" + id + "';";
                     Dao dao = new Dao();
                     if (dao.Execute(sql) > 0)
                     {

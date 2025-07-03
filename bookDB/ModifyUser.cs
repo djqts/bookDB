@@ -18,19 +18,19 @@ namespace bookMS
             InitializeComponent();
         }
 
-        string ID = "";
+        string ID2 = "";
         public ModifyUser(string ID, string Name, string sex, string pwd)
         {
             InitializeComponent();
-            ID = textBox1.Text = ID;
-            textBox2.Text = Name;
-            textBox3.Text = sex;
+            ID2 = textBox1.Text = ID;
+            textBox3.Text = Name;
+            textBox2.Text = sex;
             textBox4.Text = pwd;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string sql = "UPDATE Book SET id = '" + textBox1.Text + "', name = '" + textBox2.Text + "',sex = '" + textBox3.Text + "',pwd = '" + textBox4.Text + "' WHERE 书号 = '" + ID + "';";
+            string sql = "UPDATE Users SET id = '" + textBox1.Text + "', name = '" + textBox3.Text + "',sex = '" + textBox2.Text + "',psw = '" + textBox4.Text + "' WHERE id = '" + ID2 + "';";
             Dao dao = new Dao();
             if (dao.Execute(sql) > 0)
             {
@@ -38,7 +38,7 @@ namespace bookMS
                 this.Close();
                 //跳转到主界面
                 this.Hide();
-                Admin2 mainForm = new Admin2();
+                UserManage mainForm = new UserManage();
                 mainForm.ShowDialog();
             }
             else

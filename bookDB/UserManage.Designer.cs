@@ -63,6 +63,7 @@
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(849, 676);
             dataGridView1.TabIndex = 1;
+            dataGridView1.Click += dataGridView1_Click;
             // 
             // Column1
             // 
@@ -119,7 +120,6 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(150, 30);
             textBox1.TabIndex = 17;
-            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // button6
             // 
@@ -199,6 +199,7 @@
             Controls.Add(dataGridView1);
             Name = "UserManage";
             Text = "UserManage";
+            Load += UserManage_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
