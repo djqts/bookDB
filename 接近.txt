@@ -1,0 +1,138 @@
+-- 1. 创建数据库
+CREATE DATABASE bookDB
+GO
+
+USE bookDB
+GO
+
+CREATE TABLE [Users](
+    id VARCHAR(50) PRIMARY KEY,
+    name NVARCHAR(50) NOT NULL,
+    sex CHAR(2) NOT NULL CHECK (sex IN ('男', '女')),
+    psw VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE Admin(
+    id VARCHAR(50) PRIMARY KEY,
+    pwd VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Book(
+    书号 VARCHAR(50) PRIMARY KEY,
+    书名 NVARCHAR(100) NOT NULL,
+    作者 NVARCHAR(50) NOT NULL,
+    出版社 NVARCHAR(100) NOT NULL,
+    库存 INT DEFAULT 0
+);
+
+
+CREATE TABLE Borrow(
+    no INT IDENTITY(1,1) PRIMARY KEY,
+    uid VARCHAR(50) FOREIGN KEY REFERENCES [Users](id),
+    bid VARCHAR(50) FOREIGN KEY REFERENCES Book(书号),
+    借阅时间 DATETIME DEFAULT GETDATE(),
+    归还时间 DATETIME NULL,
+    --是否逾期 AS CASE WHEN 归还时间 > DATEADD(DAY, 30, 借阅时间) THEN 1 ELSE 0 END,
+    是否逾期 AS CASE WHEN 归还时间 > DATEADD(SECOND, 30, 借阅时间) THEN 1 ELSE 0 END PERSISTED,
+    罚款金额 DECIMAL(10,2) DEFAULT 0,
+    罚款验证码 NVARCHAR(50) NOT NULL
+);
+
+
+-- 视图：图书库存与总藏书量
+IF OBJECT_ID('vw_BookInventory', 'V') IS NOT NULL DROP VIEW vw_BookInventory;
+GO
+CREATE VIEW vw_BookInventory AS
+SELECT 
+    书号,
+    书名,
+    库存 AS 当前库存,
+    (库存 + (SELECT COUNT(*) FROM Borrow WHERE bid = Book.书号 AND 归还时间 IS NULL)) AS 总藏书量
+FROM Book;
+GO
+
+-- 创建存储过程：查询特定用户的借阅记录
+IF OBJECT_ID('sp_GetUserBorrowRecords', 'P') IS NOT NULL DROP PROCEDURE sp_GetUserBorrowRecords;
+GO
+CREATE PROCEDURE sp_GetUserBorrowRecords
+    @uid VARCHAR(50)
+AS
+BEGIN
+    SELECT 
+        b.bid AS 书号,
+        bk.书名,
+        b.借阅时间,
+        b.归还时间,
+        b.罚款金额，
+	b.罚款验证码
+    FROM Borrow b
+    JOIN Book bk ON b.bid = bk.书号
+    WHERE b.uid = @uid
+END
+GO
+
+--创建触发器：自动调整库存
+
+-- 借出时减少库存
+IF OBJECT_ID('trg_Borrow_Insert', 'TR') IS NOT NULL DROP TRIGGER trg_Borrow_Insert;
+GO
+CREATE TRIGGER trg_Borrow_Insert
+ON Borrow
+AFTER INSERT
+AS
+BEGIN
+    UPDATE Book
+    SET 库存 = 库存 - 1
+    FROM Book b
+    INNER JOIN inserted i ON b.书号 = i.bid
+    WHERE i.归还时间 IS NULL
+END
+GO
+
+-- 归还时增加库存并计算罚款
+IF OBJECT_ID('trg_Borrow_Update', 'TR') IS NOT NULL DROP TRIGGER trg_Borrow_Update;
+GO
+CREATE TRIGGER trg_Borrow_Update
+ON Borrow
+AFTER UPDATE
+AS
+BEGIN
+    -- 判断是否有记录从“未归还”变为“已归还”
+    IF EXISTS (
+        SELECT 1
+        FROM inserted i
+        JOIN deleted d ON i.no = d.no
+        WHERE i.归还时间 IS NOT NULL AND d.归还时间 IS NULL
+    )
+    BEGIN
+        -- 增加库存
+        UPDATE Book
+        SET 库存 = 库存 + 1
+        FROM Book b
+        INNER JOIN inserted i ON b.书号 = i.bid
+        WHERE i.归还时间 IS NOT NULL;
+
+        -- 计算罚款金额（按天数计算）
+        UPDATE b
+        SET 罚款金额 = CASE 
+            WHEN DATEDIFF(SECOND , i.借阅时间, i.归还时间) > 30 THEN 
+                (DATEDIFF(SECOND , DATEADD(SECOND , 30, i.借阅时间), i.归还时间)) * 0.5
+            ELSE 0 
+        END
+        FROM Borrow b
+        INNER JOIN inserted i ON b.no = i.no;
+    END
+END
+GO
+
+-- 插入测试数据
+INSERT INTO Admin (id, pwd) VALUES ('admin', '123456');
+
+INSERT INTO [Users] (id, name, sex, psw) VALUES ('u001', '张三', '男', '123');
+INSERT INTO [Users] (id, name, sex, psw) VALUES ('u002', '李四', '女', '456');
+
+INSERT INTO Book (书号, 书名, 作者, 出版社, 库存) VALUES ('b001', 'C#编程入门', '王老师', '人民邮电出版社', 5);
+INSERT INTO Book (书号, 书名, 作者, 出版社, 库存) VALUES ('b002', '数据库原理', '刘教授', '清华大学出版社', 3);
+
+INSERT INTO Borrow (uid, bid,罚款验证码 ) VALUES ('u001', 'b001','001133');
