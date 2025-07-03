@@ -42,6 +42,8 @@
             button6 = new Button();
             textBox1 = new TextBox();
             textBox2 = new TextBox();
+            label1 = new Label();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -62,6 +64,7 @@
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(849, 719);
             dataGridView1.TabIndex = 0;
+            dataGridView1.Click += dataGridView1_Click;
             // 
             // Column1
             // 
@@ -101,6 +104,7 @@
             button1.TabIndex = 1;
             button1.Text = "添加图书";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // button2
             // 
@@ -110,6 +114,7 @@
             button2.TabIndex = 2;
             button2.Text = "修改图书";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // button3
             // 
@@ -119,6 +124,7 @@
             button3.TabIndex = 3;
             button3.Text = "删除图书";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button4
             // 
@@ -128,6 +134,7 @@
             button4.TabIndex = 4;
             button4.Text = "刷新";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // button5
             // 
@@ -137,6 +144,7 @@
             button5.TabIndex = 5;
             button5.Text = "书号查询";
             button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
             // 
             // button6
             // 
@@ -146,6 +154,7 @@
             button6.TabIndex = 6;
             button6.Text = "书名查询";
             button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
             // 
             // textBox1
             // 
@@ -161,11 +170,31 @@
             textBox2.Size = new Size(150, 30);
             textBox2.TabIndex = 8;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(1070, 112);
+            label1.Name = "label1";
+            label1.Size = new Size(172, 24);
+            label1.TabIndex = 9;
+            label1.Text = "当前选中的图书是：";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(1088, 185);
+            label2.Name = "label2";
+            label2.Size = new Size(42, 24);
+            label2.TabIndex = 10;
+            label2.Text = "null";
+            // 
             // Admin2
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1238, 719);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
             Controls.Add(button6);
@@ -198,5 +227,7 @@
         private Button button6;
         private TextBox textBox1;
         private TextBox textBox2;
+        private Label label1;
+        private Label label2;
     }
 }

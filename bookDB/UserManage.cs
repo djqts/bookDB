@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace bookMS
 {
-    public partial class Admin2 : Form
+    public partial class UserManage : Form
     {
-        public Admin2()
+        public UserManage()
         {
             InitializeComponent();
             Table();
@@ -22,22 +22,21 @@ namespace bookMS
             Table();
             label2.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
         }
+
         private void Table()
         {
             dataGridView1.Rows.Clear();
             Dao dao = new Dao();
-            string sql = "SELECT * FROM Book";
+            string sql = "SELECT * FROM Users;";
             IDataReader dt = dao.ExecuteReader(sql);
             string a0, a1, a2, a3;
-            int a4;
             while (dt.Read())
             {
                 a0 = dt.GetString(0);
                 a1 = dt.GetString(1);
                 a2 = dt.GetString(2);
                 a3 = dt.GetString(3);
-                a4 = dt.GetInt32(4);
-                string[] row = { a0, a1, a2, a3, a4.ToString() };
+                string[] row = { a0, a1, a2, a3 };
                 dataGridView1.Rows.Add(row);
             }
             dt.Close();
@@ -53,7 +52,7 @@ namespace bookMS
                 DialogResult result = MessageBox.Show("确定删除吗？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string sql = "DELETE FROM Book WHERE 书号 = " + id;
+                    string sql = "DELETE FROM Users WHERE 书号 = " + id;
                     Dao dao = new Dao();
                     if (dao.Execute(sql) > 0)
                     {
@@ -74,12 +73,13 @@ namespace bookMS
             }
         }
 
+
         private void button1_Click(object sender, EventArgs e)
         {
             //跳转到添加界面
             this.Hide();
-            AddBook addBook = new AddBook();
-            addBook.Show();
+            AddUser addUser = new AddUser();
+            addUser.Show();
         }
 
         private void dataGridView1_Click(object sender, EventArgs e)
@@ -87,19 +87,19 @@ namespace bookMS
             label2.Text = dataGridView1.CurrentRow.Cells[0].Value.ToString();
         }
 
+        //修改
         private void button2_Click(object sender, EventArgs e)
         {
             try
             {
                 string id = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 string name = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-                string author = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-                string publusher = dataGridView1.CurrentRow.Cells[3].Value.ToString();
-                string inventory = dataGridView1.CurrentRow.Cells[4].Value.ToString();
+                string sex = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                string pwd = dataGridView1.CurrentRow.Cells[3].Value.ToString();
                 //修改界面
                 this.Hide();
-                ModifyBook modifyBook = new ModifyBook(id, name, author, publusher, inventory);
-                modifyBook.Show();
+                ModifyUser modifyUser = new ModifyUser(id, name, sex, pwd);
+                modifyUser.Show();
             }
             catch (Exception)
             {
@@ -109,23 +109,21 @@ namespace bookMS
 
         }
 
-        //书号查询
-        private void SearchBookID()
+        //ID查询
+        private void SearchUserID()
         {
             dataGridView1.Rows.Clear();
             Dao dao = new Dao();
-            string sql = "SELECT * FROM Book WHERE 书号 LIKE '%" + textBox1.Text + "%'";//模糊查询
+            string sql = "SELECT * FROM Users WHERE id LIKE '%" + textBox1.Text + "%';";//模糊查询
             IDataReader dt = dao.ExecuteReader(sql);
             string a0, a1, a2, a3;
-            int a4;
             while (dt.Read())
             {
                 a0 = dt.GetString(0);
                 a1 = dt.GetString(1);
                 a2 = dt.GetString(2);
                 a3 = dt.GetString(3);
-                a4 = dt.GetInt32(4);
-                string[] row = { a0, a1, a2, a3, a4.ToString() };
+                string[] row = { a0, a1, a2, a3 };
                 dataGridView1.Rows.Add(row);
             }
             dt.Close();
@@ -133,27 +131,25 @@ namespace bookMS
         }
         private void button5_Click(object sender, EventArgs e)
         {
-            SearchBookID();
+            SearchUserID();
         }
 
 
-        //书号查询
-        private void SearchBookName()
+        //姓名查询
+        private void SearchName()
         {
             dataGridView1.Rows.Clear();
             Dao dao = new Dao();
-            string sql = "SELECT * FROM Book WHERE 书名 LIKE '%" + textBox2.Text + "%'";//模糊查询
+            string sql = "SELECT * FROM Users WHERE 书名 LIKE '%" + textBox2.Text + "%';";//模糊查询
             IDataReader dt = dao.ExecuteReader(sql);
             string a0, a1, a2, a3;
-            int a4;
             while (dt.Read())
             {
                 a0 = dt.GetString(0);
                 a1 = dt.GetString(1);
                 a2 = dt.GetString(2);
                 a3 = dt.GetString(3);
-                a4 = dt.GetInt32(4);
-                string[] row = { a0, a1, a2, a3, a4.ToString() };
+                string[] row = { a0, a1, a2, a3 };
                 dataGridView1.Rows.Add(row);
             }
             dt.Close();
@@ -161,9 +157,11 @@ namespace bookMS
         }
         private void button6_Click(object sender, EventArgs e)
         {
-            SearchBookName();
+            SearchName();
         }
 
+
+        //刷新
         private void button4_Click(object sender, EventArgs e)
         {
             Table();
@@ -171,7 +169,9 @@ namespace bookMS
             textBox2.Text = "";
         }
 
-        //补充：并行查询
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }

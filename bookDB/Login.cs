@@ -28,8 +28,8 @@ namespace bookMS
             if (radioButton1.Checked == true)
             {
                 Dao dao = new Dao();
-                string sql = "select * from user where name='" + textBox1.Text + "' and password='" + textBox2.Text + "'";
-                MessageBox.Show(sql);
+                string sql = "select * from Users where id='" + textBox1.Text + "' and psw='" + textBox2.Text + "';";
+                //MessageBox.Show(sql);
                 IDataReader reader = dao.ExecuteReader(sql);
                 if (reader.Read())
                 {
@@ -39,7 +39,7 @@ namespace bookMS
 
                     MessageBox.Show("Login successfully!");
                     //跳转到用户界面
-                    User1 user = new User1();
+                    User user = new User();
                     this.Hide();
                     user.ShowDialog();
                     this.Show();
@@ -54,8 +54,8 @@ namespace bookMS
             if (radioButton2.Checked == true)
             {
                 Dao dao = new Dao();
-                string sql = "select * from user where name='" + textBox1.Text + "' and password='" + textBox2.Text + "'";
-                MessageBox.Show(sql);
+                string sql = "select * from Admin where id='" + textBox1.Text + "' and pwd='" + textBox2.Text + "';";
+                //MessageBox.Show(sql);
                 IDataReader reader = dao.ExecuteReader(sql);
                 if (reader.Read())
                 {
@@ -72,16 +72,6 @@ namespace bookMS
                 }
                 dao.DaoClose();
             }
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

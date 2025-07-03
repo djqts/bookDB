@@ -22,5 +22,23 @@ namespace bookMS
             Admin2 a = new Admin2();
             a.ShowDialog();
         }
+
+        private void 读者管理ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UserManage u = new UserManage();
+            u.ShowDialog();
+        }
+
+        private void 借阅记录ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BorrowRecord r = new BorrowRecord();
+            r.ShowDialog();
+        }
+
+        private void 罚款管理ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            View v = new View();
+            v.ShowDialog();
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace bookMS
 {
-    partial class Admin2_1
+    partial class AddBook
     {
         /// <summary>
         /// Required designer variable.
@@ -51,6 +51,7 @@
             label1.Size = new Size(58, 24);
             label1.TabIndex = 0;
             label1.Text = "书号";
+            label1.Click += label1_Click;
             // 
             // textBox1
             // 
@@ -151,8 +152,9 @@
             button1.TabIndex = 10;
             button1.Text = "确认添加";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
             // 
-            // Admin2_1
+            // AddBook
             // 
             AutoScaleDimensions = new SizeF(11F, 24F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -168,7 +170,7 @@
             Controls.Add(label2);
             Controls.Add(textBox1);
             Controls.Add(label1);
-            Name = "Admin2_1";
+            Name = "AddBook";
             Text = "添加图书";
             ResumeLayout(false);
             PerformLayout();

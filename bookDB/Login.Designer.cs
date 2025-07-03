@@ -58,7 +58,6 @@
             label2.Size = new Size(76, 21);
             label2.TabIndex = 1;
             label2.Text = "账户：";
-            label2.Click += label2_Click;
             // 
             // label3
             // 
@@ -69,7 +68,6 @@
             label3.Size = new Size(76, 21);
             label3.TabIndex = 2;
             label3.Text = "密码：";
-            label3.Click += label3_Click;
             // 
             // textBox1
             // 
